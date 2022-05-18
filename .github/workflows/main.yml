@@ -30,6 +30,6 @@ jobs:
     - name: Deploy static site to S3 bucket
       run: aws s3 sync ./frontend s3://jacqueskellerman.me/ --delete --exclude ".git*"
 
-# TODO - add CloudFront distribution ID when setup
-#    - name: Invalidate CloudFront cache    
-#      run: aws cloudfront create-invalidation --distribution-id @DISTRIBUTION-ID --paths "/index.html"
+    # Invalidate CloudFront distribution cache for modified content to reflect
+    - name: Invalidate CloudFront cache    
+      run: aws cloudfront create-invalidation --distribution-id E3QP8PDBR6BFS5 --paths "/index.html"
