@@ -1,6 +1,5 @@
-fetch('https://c8bhagdr6l.execute-api.eu-central-1.amazonaws.com/PROD/put')
-/*    .then(() => fetch('https://c8bhagdr6l.execute-api.eu-central-1.amazonaws.com/PROD/get'))*/
+fetch('https://fr5o002bn2.execute-api.eu-central-1.amazonaws.com/Prod/get/')
     .then(response => response.json())
     .then(data => {
-        document.getElementById('visitorCount').innerText = data['visitorCount']
+        document.getElementById('visitorCountTotal').innerText = data['visitorCount']
     })
