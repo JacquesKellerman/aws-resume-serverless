@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  backend
-
-  Sample SAM Template for backend
+  Backend template for #CloudResumeChallenge on AWS
+  Jacques Kellerman
+  2022-05-20
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -16,8 +16,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       AccessControl: PublicRead
-      BucketName: jacqueskellerman.link
-      #BucketName: jacqueskellerman.me
+      BucketName: jacqueskellerman.me
       WebsiteConfiguration:
         IndexDocument: index.html
 

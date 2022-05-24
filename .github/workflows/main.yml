@@ -7,9 +7,86 @@ on:
   push:
     branches: [ main ]
 
+env:
+  PYTHON_VERSION: 3.9
+  AWS_DEFAULT_REGION: 'eu-central-1'
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 jobs:
-  # This workflow contains a single job called "deploy"
-  deploy:
+# This workflow contains multiple jobs that test backend code, deploys backend and deploys frontend
+
+  # Test Lambda function code
+  test-infra:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps: 
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: ${{env.PYTHON_VERSION }}
+      - name: install UnitTest
+        run: pip install unittest
+      #- name: install simplejson
+      #  run: pip install simplejson
+      - name: install Pip
+        run: python -m pip install --upgrade pip
+      - name: install PyTest
+        run: pip install pytest pytest-mock --user
+      - name: Test Lambda function
+        #run: cd ./backend/get_function && python test.py -v && cd .. && cd ..
+        run:  |
+              cd ./backend/ && python -m pytest ./get_function/ -v && cd ..
+    
+  deploy-infra:
+    # Lambda function tests must complete successfully 
+    needs: test-infra
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: PYTHON_VERSION
+          architecture: 'x64'
+      - uses: aws-actions/setup-sam@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
+      #- run: sam build
+      - run: sam build --use-container
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+
+  # Upload frontend files to S3 bucket and invalidate CloudFront
+  deploy-site:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Obtain AWS Credentials from Secrets
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
+
+    # Copy contents of main website to  S3 bucket, deleting existing contents first
+    - name: Deploy static site to S3 bucket
+      run: aws s3 sync ./frontend s3://jacqueskellerman.me/ --delete --exclude ".git*"
+  
+    # Invalidate CloudFront distribution cache for modified content to reflect
+    - name: Invalidate CloudFront cache    
+      run: aws cloudfront create-invalidation --distribution-id E198R7UQG19RL5 --paths "/index.html"
+
+# Upload frontend files to S3 bucket for blog
+  deploy-blog:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -26,15 +103,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1
 
-    # Copy contents of main website to  S3 bucket, deleting existing contents first
-    - name: Deploy static site to S3 bucket
-      run: aws s3 sync ./frontend s3://jacqueskellerman.me/ --delete --exclude ".git*"
-  
-    # Invalidate CloudFront distribution cache for modified content to reflect
-    - name: Invalidate CloudFront cache    
-      run: aws cloudfront create-invalidation --distribution-id E198R7UQG19RL5 --paths "/index.html"
-
-    # Copy contents ofblog  website to  S3 bucket, deleting existing contents first
+    # Copy contents of blog  website to  S3 bucket, deleting existing contents first
     - name: Deploy blog site to S3 bucket
       run: aws s3 sync ./blog  s3://blog.jacqueskellerman.me/ --delete --exclude ".git*"
-    
