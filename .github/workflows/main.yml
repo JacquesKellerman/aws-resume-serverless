@@ -26,10 +26,15 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1
 
-    # Copy contents to S3 bucket, deleting existing contents first
+    # Copy contents of main website to  S3 bucket, deleting existing contents first
     - name: Deploy static site to S3 bucket
       run: aws s3 sync ./frontend s3://jacqueskellerman.me/ --delete --exclude ".git*"
-
+  
     # Invalidate CloudFront distribution cache for modified content to reflect
     - name: Invalidate CloudFront cache    
-      run: aws cloudfront create-invalidation --distribution-id E3QP8PDBR6BFS5 --paths "/index.html"
+      run: aws cloudfront create-invalidation --distribution-id E198R7UQG19RL5 --paths "/index.html"
+
+    # Copy contents ofblog  website to  S3 bucket, deleting existing contents first
+    - name: Deploy blog site to S3 bucket
+      run: aws s3 sync ./blog  s3://blog.jacqueskellerman.me/ --delete --exclude ".git*"
+    
