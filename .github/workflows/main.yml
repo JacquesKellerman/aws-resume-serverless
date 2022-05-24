@@ -25,12 +25,12 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{env.PYTHON_VERSION }}
-      - name: install UnitTest
-        run: pip install unittest
-      #- name: install simplejson
-      #  run: pip install simplejson
       - name: install Pip
         run: python -m pip install --upgrade pip
+      #- name: install UnitTest
+      #  run: pip install unittest
+      #- name: install simplejson
+      #  run: pip install simplejson
       - name: install PyTest
         run: pip install pytest pytest-mock --user
       - name: Test Lambda function
@@ -61,6 +61,7 @@ jobs:
 
   # Upload frontend files to S3 bucket and invalidate CloudFront
   deploy-site:
+    needs: deploy-infra
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -87,6 +88,7 @@ jobs:
 
 # Upload frontend files to S3 bucket for blog
   deploy-blog:
+    needs: test-infra
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
