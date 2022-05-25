@@ -34,8 +34,8 @@ jobs:
         run: pip install boto3
       - name: install moto
         run: pip install moto
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      #- name: Setup tmate session
+      #  uses: mxschmitt/action-tmate@v3
       - name: Test Lambda function
         run: cd backend/get_function/ && pytest ./test_handler.py
         #run: python -m pytest
