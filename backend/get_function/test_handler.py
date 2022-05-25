@@ -23,7 +23,6 @@ class TestAPI(unittest.TestCase):
     # Create dynamodb boto3 object
     dynamodb = boto3.client('dynamodb')
     # Get dynamodb table name from env
-    # ddbTableName = os.environ['databaseName']
     ddbTableName = 'testingdb'
     
     # Create mock table
