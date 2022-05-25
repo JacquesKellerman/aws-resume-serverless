@@ -12,6 +12,7 @@ env:
   AWS_DEFAULT_REGION: 'eu-central-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  WORKING_DIRECTORY: ./backend
 
 jobs:
 # This workflow contains multiple jobs that test backend code, deploys backend and deploys frontend
@@ -35,12 +36,11 @@ jobs:
         run: pip install pytest pytest-mock --user
       - name: Test Lambda function
         run: |
+          working-directory: ${{env.WORKING_DIRECTORY }}
           echo "$GITHUB_CONTEXT"
-          echo "::set-output name=mix-ecto_migrate::$(mix ecto.migrate)\n"
-          cd ../backend/get_function
+          echo ${{env.WORKING_DIRECTORY }}
+          cd ./get_function
           python test.py -v
-          cd ..
-          cd ..
         #run:  cd ./backend/ && python -m pytest ./get_function/ -v && cd ..
     
   deploy-infra:
