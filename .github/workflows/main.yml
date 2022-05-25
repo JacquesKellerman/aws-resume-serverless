@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: ${{env.PYTHON_VERSION }}
       - name: install Pip
-        run: cd .. && cd /backend/get_function/ && python -m pip install --upgrade pip && pip install -r requirements.txt
+        run: cd ./backend/get_function/ && python -m pip install --upgrade pip && pip install -r requirements.txt
       - name: install PyTest
         run: pip install pytest pytest-mock --user
       - name: install boto3
