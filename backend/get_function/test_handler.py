@@ -15,7 +15,7 @@ def aws_setup():
   os.environ['AWS_DEFAULT_REGION'] = 'eu-central-1'
 
   # Database table name into env variable
-  os.environ['databaseName'] = 'visitorCounterTable'
+  os.environ['databaseName'] = 'testingdb'
 
 class TestAPI(unittest.TestCase):
   @mock_dynamodb
@@ -23,7 +23,8 @@ class TestAPI(unittest.TestCase):
     # Create dynamodb boto3 object
     dynamodb = boto3.client('dynamodb')
     # Get dynamodb table name from env
-    ddbTableName = os.environ['databaseName']
+    # ddbTableName = os.environ['databaseName']
+    ddbTableName = 'testingdb'
     
     # Create mock table
     dynamodb.create_table(
