@@ -4,7 +4,7 @@ import boto3
 import os
 import unittest
 from moto import mock_dynamodb2
-from app.py import handler
+from get_function/app import handler
 
 def aws_setup():
   # Mocked AWS Credentials for moto

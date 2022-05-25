@@ -1,6 +1,6 @@
 import unittest
 
-from get_function.app import lambda_handler
+from app import lambda_handler
 
 class TestAPI(unittest.TestCase):
     def test_getApi_works(self):
