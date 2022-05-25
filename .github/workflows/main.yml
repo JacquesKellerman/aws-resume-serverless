@@ -32,6 +32,8 @@ jobs:
         run: pip install pytest pytest-mock --user
       - name: install boto3
         run: pip install boto3
+      - name: install moto
+        run: pip install moto
       - name: Test Lambda function
         run: python -m pytest
     
