@@ -12,13 +12,13 @@ Globals:
     Tracing: Active
 
 Resources:
-  S3BucketForWebsite:
-    Type: AWS::S3::Bucket
-    Properties:
-      AccessControl: PublicRead
-      BucketName: jacqueskellerman.me
-      WebsiteConfiguration:
-        IndexDocument: index.html
+#  S3BucketForWebsite:
+#    Type: AWS::S3::Bucket
+#    Properties:
+#      AccessControl: PublicRead
+#      BucketName: jacqueskellerman.me
+#      WebsiteConfiguration:
+#        IndexDocument: index.html
 
   DynamoDBTable:
     Type: AWS::DynamoDB::Table
