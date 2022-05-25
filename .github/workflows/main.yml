@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: ${{env.PYTHON_VERSION }}
       - name: install Pip
-        run: cd ./backend/get_function/ && python -m pip install --upgrade pip && pip install -r requirements.txt
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
       - name: install PyTest
         run: pip install pytest pytest-mock --user
       - name: install boto3
@@ -37,11 +37,12 @@ jobs:
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
       - name: Test Lambda function
-        run: python -m pytest
-    
+        run: cd backend/get_function/ && pytest ./test_handler.py
+        #run: python -m pytest
+
   deploy-infra:
     # Lambda function tests must complete successfully 
-    # needs: test-infra
+    needs: test-infra
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
