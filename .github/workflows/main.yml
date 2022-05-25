@@ -31,7 +31,7 @@ jobs:
       - name: install PyTest
         run: pip install pytest pytest-mock --user
       - name: Test Lambda function
-        run: pytest
+        run: python -m pytest
     
   deploy-infra:
     # Lambda function tests must complete successfully 
