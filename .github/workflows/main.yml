@@ -34,9 +34,8 @@ jobs:
       - name: install PyTest
         run: pip install pytest pytest-mock --user
       - name: Test Lambda function
-        #run: cd ./backend/get_function && python test.py -v && cd .. && cd ..
-        run:  |
-              cd ./backend/ && python -m pytest ./get_function/ -v && cd ..
+        run: cd ./backend/get_function && python test.py -v && cd .. && cd ..
+        #run:  cd ./backend/ && python -m pytest ./get_function/ -v && cd ..
     
   deploy-infra:
     # Lambda function tests must complete successfully 
