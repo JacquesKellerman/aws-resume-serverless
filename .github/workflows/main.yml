@@ -34,7 +34,13 @@ jobs:
       - name: install PyTest
         run: pip install pytest pytest-mock --user
       - name: Test Lambda function
-        run: cd ./backend/get_function && python test.py -v && cd .. && cd ..
+        run: |
+          echo "$GITHUB_CONTEXT"
+          echo "::set-output name=mix-ecto_migrate::$(mix ecto.migrate)\n"
+          cd ../backend/get_function
+          python test.py -v
+          cd ..
+          cd ..
         #run:  cd ./backend/ && python -m pytest ./get_function/ -v && cd ..
     
   deploy-infra:
