@@ -12,7 +12,7 @@ env:
   AWS_DEFAULT_REGION: 'eu-central-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  WORKING_DIRECTORY: ./backend
+  #WORKING_DIRECTORY: ./backend
 
 jobs:
 # This workflow contains multiple jobs that test backend code, deploys backend and deploys frontend
@@ -27,21 +27,11 @@ jobs:
         with:
           python-version: ${{env.PYTHON_VERSION }}
       - name: install Pip
-        run: python -m pip install --upgrade pip
-      #- name: install UnitTest
-      #  run: pip install unittest
-      #- name: install simplejson
-      #  run: pip install simplejson
+        run: cd ./backend/get_function/ && python -m pip install --upgrade pip && pip install -r requirements.txt
       - name: install PyTest
         run: pip install pytest pytest-mock --user
       - name: Test Lambda function
-        run: |
-          working-directory: ${{env.WORKING_DIRECTORY }}
-          echo "$GITHUB_CONTEXT"
-          echo ${{env.WORKING_DIRECTORY }}
-          cd ./get_function
-          python test.py -v
-        #run:  cd ./backend/ && python -m pytest ./get_function/ -v && cd ..
+        run: pytest
     
   deploy-infra:
     # Lambda function tests must complete successfully 
