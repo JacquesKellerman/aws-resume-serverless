@@ -4,7 +4,7 @@ import os
 import unittest
 
 from moto import mock_dynamodb2
-from app import handler
+from app import lambda_handler
 
 def aws_setup():
   # Mocked AWS Credentials for moto
@@ -44,7 +44,7 @@ class TestAPI(unittest.TestCase):
     )
 
     # Print Lambda response
-    LambdaResponse = handler(0, 0)
+    LambdaResponse = lambda_handler(0, 0)
     print("Lambda response: ", LambdaResponse)
 
     # Run unit test against Lambda status code
