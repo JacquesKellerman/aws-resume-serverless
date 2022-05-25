@@ -26,6 +26,8 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: ${{env.PYTHON_VERSION }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: install Pip
         run: cd ./backend/get_function/ && python -m pip install --upgrade pip && pip install -r requirements.txt
       - name: install PyTest
