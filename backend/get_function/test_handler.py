@@ -3,7 +3,7 @@ import boto3
 import os
 import unittest
 
-from moto import mock_dynamodb2
+from moto import mock_dynamodb
 from app import lambda_handler
 
 def aws_setup():
@@ -15,10 +15,10 @@ def aws_setup():
   os.environ['AWS_DEFAULT_REGION'] = 'eu-central-1'
 
   # Database table name into env variable
-  os.environ['databaseName'] = 'testingdb'
+  os.environ['databaseName'] = 'visitorCounterTable'
 
 class TestAPI(unittest.TestCase):
-  @mock_dynamodb2
+  @mock_dynamodb
   def test_handler(self):
     # Create dynamodb boto3 object
     dynamodb = boto3.client('dynamodb')
