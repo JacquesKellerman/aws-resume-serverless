@@ -90,7 +90,7 @@ jobs:
 
 # Upload frontend files to S3 bucket for blog
   deploy-blog:
-    needs: deploy-infra
+    #needs: deploy-infra
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
